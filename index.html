@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WDG × WordPress VIP — NTSB Capabilities</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root {
+  --c-black:    #131313;
+  --c-white:    #ffffff;
+  --c-gold:     #ffd301;
+  --c-cream:    #edebe7;
+  --c-amber:    #da9a45;
+  --c-amber-lt: #d8a45f;
+  --c-blue:     #003579;
+  --bg-light:   #f2f0ec;
+  --text-dark:  #131313;
+  --text-muted: #5c5650;
+  --rule:       #d6d2cb;
+
+  /* Spacing — fluid, generous */
+  --gap-xs:  clamp(8px,   0.6vw,  14px);
+  --gap-sm:  clamp(16px,  1.2vw,  24px);
+  --gap-md:  clamp(28px,  2.2vw,  44px);
+  --gap-lg:  clamp(38px,  3vw,    58px);
+  --pad-x:   clamp(32px,  3.5vw,  64px);
+  --pad-y:   clamp(24px,  2vw,    40px);
+
+  /* Type scale */
+  --t-tag:    8pt;           /* portfolio tags */
+  --t-label:  10pt;          /* section labels */
+  --t-body:   11pt;          /* body copy, pane items, step text */
+  --t-ui:     clamp(11pt, 1.1vw, 12pt);   /* pillar titles, case names */
+  --t-title:  clamp(13pt, 1.5vw, 15pt);   /* section headings */
+  --t-hero:   clamp(20pt, 2.6vw, 28pt);   /* header tagline */
+  --t-lock:   clamp(11pt, 1.2vw, 13pt);   /* footer WDG × WPVIP */
+  --t-stat:   clamp(17pt, 2.2vw, 23pt);   /* stat numbers */
+  --t-metric: clamp(14pt, 1.8vw, 18pt);   /* NASA metrics */
+  --t-footer: 9pt;           /* footer contact */
+}
+
+/* ══════════════════════════════════════════
+   RESET + BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.65;
+  background: #c0c0c0;
+  color: var(--text-dark);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  background: var(--c-white);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.header {
+  background: var(--c-black);
+  padding: var(--gap-lg) var(--pad-x) var(--gap-md);
+  position: relative;
+  overflow: hidden;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-gold) 0%, var(--c-amber) 45%, var(--c-blue) 100%);
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -5%;
+  width: 40%; height: 200%;
+  background: radial-gradient(ellipse at center, rgba(0,53,121,0.16) 0%, transparent 65%);
+  pointer-events: none;
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--gap-lg);
+  position: relative;
+  z-index: 1;
+}
+.header-left { flex: 1; min-width: 0; }
+
+.partnership-lock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--gap-xs);
+}
+.partner-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: var(--t-title);
+  font-weight: 400;
+  line-height: 1;
+}
+.partner-name.wdg   { color: var(--c-gold); }
+.partner-sep        { color: #444; font-size: var(--t-title); }
+.partner-name.wpvip { color: var(--c-white); }
+
+.header-tagline {
+  font-family: 'DM Serif Display', serif;
+  font-size: var(--t-hero);
+  line-height: 1.1;
+  color: var(--c-white);
+  margin-bottom: var(--gap-sm);
+}
+.header-tagline em { font-style: italic; color: var(--c-amber-lt); }
+
+.header-sub {
+  font-size: var(--t-body);
+  color: rgba(237,235,231,0.6);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 58ch;
+}
+
+.header-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--gap-xs);
+  flex-shrink: 0;
+  min-width: 210px;
+}
+.badge {
+  font-size: var(--t-label);
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 2px;
+  text-align: center;
+  line-height: 1.4;
+}
+.badge-gold  { background: var(--c-gold);  color: var(--c-black); }
+.badge-blue  { background: var(--c-blue);  color: var(--c-white); }
+.badge-amber { background: var(--c-amber); color: var(--c-white); }
+.badge-ghost { background: transparent; color: rgba(237,235,231,0.38); border: 1px solid rgba(237,235,231,0.18); }
+
+/* ══════════════════════════════════════════
+   BODY GRID
+══════════════════════════════════════════ */
+.body {
+  padding: var(--gap-md) var(--pad-x) var(--gap-lg);
+  display: grid;
+  gap: var(--gap-lg);
+  flex: 1;
+  align-content: start;
+}
+@media (min-width: 700px) {
+  .body { grid-template-columns: 1.85fr 1.5fr; }
+}
+
+.left-col  { display: flex; flex-direction: column; gap: var(--gap-md); }
+.right-col { display: flex; flex-direction: column; gap: var(--gap-md); }
+
+/* ══════════════════════════════════════════
+   SECTION ANATOMY
+══════════════════════════════════════════ */
+.sec-label {
+  font-size: var(--t-label);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-blue);
+  margin-bottom: var(--gap-xs);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-label::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.sec-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: var(--t-title);
+  color: var(--text-dark);
+  line-height: 1.25;
+  margin-bottom: var(--gap-xs);
+}
+
+.body-text {
+  font-size: var(--t-body);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ══════════════════════════════════════════
+   PARTNER SPLIT
+══════════════════════════════════════════ */
+.partner-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.partner-pane { padding: var(--gap-sm) var(--gap-md); }
+.partner-pane.wdg-pane { background: var(--c-black); border-right: 2px solid var(--c-gold); }
+.partner-pane.vip-pane { background: var(--c-blue);  border-left: 2px solid var(--c-amber); }
+
+.pane-label {
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  margin-bottom: var(--gap-sm);
+}
+.pane-label.wdg-label { color: var(--c-gold); }
+.pane-label.vip-label { color: var(--c-amber-lt); }
+
+.pane-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: var(--gap-xs); }
+.pane-item:last-child { margin-bottom: 0; }
+.pane-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+.wdg-dot { background: var(--c-gold); }
+.vip-dot { background: var(--c-amber-lt); }
+.pane-text { font-size: var(--t-body); line-height: 1.55; color: rgba(237,235,231,0.82); }
+
+/* ══════════════════════════════════════════
+   PILLARS — 2×2 GRID
+══════════════════════════════════════════ */
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-xs);
+}
+.pillar {
+  background: var(--bg-light);
+  border-top: 2.5px solid var(--c-blue);
+  padding: var(--gap-sm) var(--gap-sm);
+}
+.pillar.gold-top   { border-top-color: var(--c-gold); }
+.pillar.amber-top  { border-top-color: var(--c-amber); }
+.pillar.amber2-top { border-top-color: var(--c-amber-lt); }
+
+.pillar-title {
+  font-weight: 700;
+  font-size: var(--t-ui);
+  color: var(--text-dark);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.pillar-text {
+  font-size: var(--t-body);
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════════
+   STAT STRIP
+══════════════════════════════════════════ */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+}
+.stat-cell {
+  padding: var(--gap-sm) var(--gap-xs);
+  text-align: center;
+  background: var(--c-black);
+  border-right: 1px solid #252525;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-num   { font-family: 'DM Serif Display', serif; font-size: var(--t-stat); color: var(--c-gold); line-height: 1; }
+.stat-label { font-size: var(--t-label); color: rgba(237,235,231,0.48); line-height: 1.45; margin-top: 5px; }
+
+/* ══════════════════════════════════════════
+   PORTFOLIO
+══════════════════════════════════════════ */
+.portfolio { border: 1px solid var(--rule); overflow: hidden; }
+.portfolio-header {
+  background: var(--c-blue);
+  padding: 8px var(--gap-sm);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-cream);
+}
+.port-case {
+  padding: var(--gap-sm);
+  border-bottom: 1px solid var(--rule);
+}
+.port-case:last-child { border-bottom: none; }
+
+.port-case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.port-case-name { font-weight: 700; font-size: var(--t-ui); color: var(--text-dark); }
+
+.port-case-tag {
+  font-size: var(--t-tag);
+  font-weight: 600;
+  background: var(--c-gold);
+  color: var(--c-black);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.port-case-tag.blue-tag {
+  background: rgba(0,53,121,0.09);
+  color: var(--c-blue);
+}
+.port-case-desc {
+  font-size: var(--t-body);
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════
+   CERTS
+══════════════════════════════════════════ */
+.cert-row { display: flex; gap: var(--gap-xs); }
+.cert {
+  flex: 1;
+  background: var(--c-black);
+  padding: var(--gap-sm);
+  border-top: 2.5px solid var(--c-amber);
+}
+.cert:first-child { border-top-color: var(--c-gold); }
+.cert:last-child  { border-top-color: rgba(0,53,121,0.7); }
+.cert-label {
+  font-size: var(--t-label);
+  font-weight: 700;
+  color: var(--c-gold);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cert:nth-child(2) .cert-label { color: var(--c-amber-lt); }
+.cert:last-child   .cert-label { color: rgba(237,235,231,0.62); }
+.cert-desc { font-size: var(--t-body); color: rgba(237,235,231,0.46); line-height: 1.5; }
+
+/* ══════════════════════════════════════════
+   STEPS
+══════════════════════════════════════════ */
+.steps { display: flex; flex-direction: column; gap: var(--gap-sm); }
+.step {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: var(--gap-sm);
+  align-items: start;
+}
+.step-num {
+  width: 26px; height: 26px;
+  background: var(--c-blue); color: var(--c-white);
+  border-radius: 50%;
+  font-size: var(--t-label);
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-body strong {
+  font-size: var(--t-ui);
+  color: var(--text-dark);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 3px;
+}
+.step-body span {
+  font-size: var(--t-body);
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer-rule {
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-gold), var(--c-amber), var(--c-blue));
+}
+.footer {
+  background: var(--c-black);
+  padding: var(--gap-sm) var(--pad-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--gap-sm);
+}
+.footer-lock { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.footer-wdg  { font-family: 'DM Serif Display', serif; font-size: var(--t-lock); color: var(--c-gold); }
+.footer-x    { font-size: var(--t-lock); color: #444; }
+.footer-vip  { font-family: 'DM Serif Display', serif; font-size: var(--t-lock); color: var(--c-cream); }
+
+.footer-contacts {
+  display: flex;
+  gap: clamp(20px, 3vw, 48px);
+  flex-wrap: wrap;
+}
+.footer-contact-item {
+  font-size: var(--t-footer);
+  color: rgba(237,235,231,0.4);
+  line-height: 1.6;
+}
+.footer-contact-item strong {
+  display: block;
+  font-weight: 600;
+  color: rgba(237,235,231,0.62);
+  margin-bottom: 1px;
+}
+.footer-contact-item span {
+  display: block;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .pillars { grid-template-columns: 1fr 1fr; } /* stays 2×2 */
+}
+
+@media (max-width: 700px) {
+  .body { grid-template-columns: 1fr; }
+  .footer { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 560px) {
+  .header-inner { flex-direction: column; align-items: flex-start; }
+  .header-badges { flex-direction: row; flex-wrap: wrap; min-width: 0; }
+  .badge-ghost { display: none; }
+  .partner-split { grid-template-columns: 1fr; }
+  .partner-pane.wdg-pane { border-right: none; border-bottom: 2px solid var(--c-gold); }
+  .partner-pane.vip-pane { border-left: none; }
+  .pillars { grid-template-columns: 1fr; }
+  .stat-strip { grid-template-columns: 1fr; }
+  .stat-cell { border-right: none; border-bottom: 1px solid #252525; }
+  .stat-cell:last-child { border-bottom: none; }
+  .cert-row { flex-direction: column; }
+  .footer-contacts { flex-direction: column; gap: var(--gap-xs); }
+}
+
+@media print {
+  body { background: #fff; }
+  .page { width: 8.5in; max-width: 8.5in; }
+  .body { grid-template-columns: 1.85fr 1.5fr !important; }
+  .pillars { grid-template-columns: 1fr 1fr !important; }
+  .partner-split { grid-template-columns: 1fr 1fr !important; }
+  .partner-pane.wdg-pane { border-right: 2px solid var(--c-gold) !important; border-bottom: none !important; }
+  .header-inner { flex-direction: row; align-items: flex-end; }
+  .header-badges { flex-direction: column; align-items: stretch; }
+  .badge-ghost { display: block; }
+  .cert-row { flex-direction: row !important; }
+  .footer { flex-direction: row; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="partnership-lock">
+          <span class="partner-name wdg">WDG</span>
+          <span class="partner-sep">×</span>
+          <span class="partner-name wpvip">WordPress VIP</span>
+        </div>
+        <div class="header-tagline">
+          Enterprise-Grade Digital Infrastructure<br>for <em>America's Federal Agencies</em>
+        </div>
+        <div class="header-sub">
+          A joint capability between WDG — a GSA Schedule digital agency and WordPress VIP Premier Partner — and WordPress VIP, the open and intelligent content platform built for government scale. Together, we modernize mission-critical federal web properties from legacy platforms to secure, accessible, future-proof experiences.
+        </div>
+      </div>
+      <div class="header-badges">
+        <div class="badge badge-gold">WPVIP Premier Partner</div>
+        <div class="badge badge-blue">GSA Schedule Holder</div>
+        <div class="badge badge-amber">FedRAMP Authorized</div>
+        <div class="badge badge-ghost">Award #47QRAA23D009S</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+
+      <div>
+        <div class="sec-label">The Opportunity — NTSB</div>
+        <div class="sec-title">ntsb.gov runs on SharePoint Classic. That's the root cause of everything.</div>
+        <p class="body-text">The National Transportation Safety Board serves survivors, safety professionals, journalists, and regulators. Its current platform — Microsoft SharePoint Classic — generates public-facing server errors, fails mobile users, and blocks content teams from self-service publishing. NTSB's Technology Modernization Fund engagement creates a clear procurement path. WDG and WordPress VIP eliminate the technical debt and deliver a site that works as hard as the agency does.</p>
+      </div>
+
+      <div>
+        <div class="sec-label">The Partnership — What Each Party Brings</div>
+        <div class="partner-split">
+          <div class="partner-pane wdg-pane">
+            <div class="pane-label wdg-label">WDG Delivers</div>
+            <div class="pane-item"><div class="pane-dot wdg-dot"></div><div class="pane-text">Content audit, URL mapping &amp; migration architecture from SharePoint to WPVIP</div></div>
+            <div class="pane-item"><div class="pane-dot wdg-dot"></div><div class="pane-text">USWDS-aligned design system and full Section 508 / WCAG 2.1 AA compliance</div></div>
+            <div class="pane-item"><div class="pane-dot wdg-dot"></div><div class="pane-text">Audience-driven IA, navigation strategy, and homepage redesign</div></div>
+            <div class="pane-item"><div class="pane-dot wdg-dot"></div><div class="pane-text">Federated search unifying investigations, CAROL, dockets &amp; press releases</div></div>
+            <div class="pane-item"><div class="pane-dot wdg-dot"></div><div class="pane-text">DAP-compliant analytics integration and editorial workflow support</div></div>
+          </div>
+          <div class="partner-pane vip-pane">
+            <div class="pane-label vip-label">WordPress VIP Delivers</div>
+            <div class="pane-item"><div class="pane-dot vip-dot"></div><div class="pane-text">FedRAMP-authorized, SOC II–certified managed cloud infrastructure</div></div>
+            <div class="pane-item"><div class="pane-dot vip-dot"></div><div class="pane-text">99.99% uptime SLA with WAF, DDoS protection, and auto failover</div></div>
+            <div class="pane-item"><div class="pane-dot vip-dot"></div><div class="pane-text">Managed patching, security updates &amp; code review — reduces IT overhead</div></div>
+            <div class="pane-item"><div class="pane-dot vip-dot"></div><div class="pane-text">Built-in CDN and edge caching for fast delivery under peak load</div></div>
+            <div class="pane-item"><div class="pane-dot vip-dot"></div><div class="pane-text">Parse.ly content intelligence: real-time analytics and audience insights</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-label">WordPress VIP — Four Core Capabilities</div>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-title">Experience Creation</div>
+            <div class="pillar-text">Block-based authoring, headless or traditional delivery, no-code site building, multisite, and AI-automated workflows — 1,200% more content creators enabled.</div>
+          </div>
+          <div class="pillar gold-top">
+            <div class="pillar-title">Managed Cloud Platform</div>
+            <div class="pillar-text">FedRAMP authorized. Auto-scaling, downtime monitoring, and automatic failover. 100% uptime maintained through election week.</div>
+          </div>
+          <div class="pillar amber-top">
+            <div class="pillar-title">Optimization</div>
+            <div class="pillar-text">Real-time analytics via Parse.ly. AI-powered insights, accessibility checking, and smart linking to grow and understand your audience.</div>
+          </div>
+          <div class="pillar amber2-top">
+            <div class="pillar-title">Extensibility</div>
+            <div class="pillar-text">Open platform, no vendor lock-in. Plugin ecosystem, REST and GraphQL APIs. No constraints on future integrations or evolving agency needs.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-label">WDG — Four Core Capabilities</div>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-title">Strategy &amp; Discovery</div>
+            <div class="pillar-text">Audience research, content inventory, IA architecture, and stakeholder facilitation — turning complexity into a clear, validated digital direction.</div>
+          </div>
+          <div class="pillar gold-top">
+            <div class="pillar-title">Design Systems &amp; UX</div>
+            <div class="pillar-text">USWDS-aligned component libraries, Section 508 / WCAG 2.1 AA compliance, and user-tested prototypes built for government content scale.</div>
+          </div>
+          <div class="pillar amber-top">
+            <div class="pillar-title">Engineering &amp; Migration</div>
+            <div class="pillar-text">End-to-end CMS migrations, front-end development, URL mapping and redirect strategy, and zero-downtime cutovers on enterprise platforms.</div>
+          </div>
+          <div class="pillar amber2-top">
+            <div class="pillar-title">Analytics &amp; Growth</div>
+            <div class="pillar-text">DAP-compliant analytics setup, audience behavior tracking, federated search architecture, and ongoing optimization informed by real usage data.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <div>
+        <div class="sec-label">Proven ROI — Government at Scale</div>
+        <div class="stat-strip">
+          <div class="stat-cell">
+            <div class="stat-num">$4.5M</div>
+            <div class="stat-label">Saved at WhiteHouse.gov since 2021</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">35%</div>
+            <div class="stat-label">Lower security maintenance cost</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">$3.48M</div>
+            <div class="stat-label">3-year total impact, enterprise migration</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio">
+        <div class="portfolio-header">Federal &amp; Enterprise Portfolio</div>
+
+        <div class="port-case">
+          <div class="port-case-header">
+            <span class="port-case-name">WhiteHouse.gov</span>
+            <span class="port-case-tag">WDG + WPVIP</span>
+          </div>
+          <div class="port-case-desc">WPVIP build and ongoing maintenance — the definitive federal WordPress VIP reference. $4.5M in taxpayer savings since 2021 through service consolidation on WPVIP infrastructure, making it the highest-profile federal web property in the country.</div>
+        </div>
+
+        <div class="port-case">
+          <div class="port-case-header">
+            <span class="port-case-name">Federal Reserve Bank of New York</span>
+            <span class="port-case-tag">WDG + WPVIP</span>
+          </div>
+          <div class="port-case-desc">Enterprise WordPress built to strict compliance, performance, and accessibility requirements — directly comparable to NTSB's federal digital standards and publishing needs.</div>
+        </div>
+
+        <div class="port-case">
+          <div class="port-case-header">
+            <span class="port-case-name">NASA.gov</span>
+            <span class="port-case-tag blue-tag">Drupal → WPVIP</span>
+          </div>
+          <div class="port-case-desc">Migrated from Drupal to WordPress VIP, NASA.gov saw dramatic improvements across search visibility, audience engagement, and discovery — all within 12 months of launch. A direct parallel to what NTSB can expect from its own SharePoint-to-WPVIP transition.</div>
+        </div>
+
+        <div class="port-case">
+          <div class="port-case-header">
+            <span class="port-case-name">Dept. of Veterans Affairs</span>
+            <span class="port-case-tag blue-tag">Drupal → WPVIP</span>
+          </div>
+          <div class="port-case-desc">Dramatic reduction in developer headcount required to maintain and publish. WPVIP's managed infrastructure shifted the VA team from server management to mission — the same outcome targeted for NTSB.</div>
+        </div>
+
+      </div>
+
+      <div>
+        <div class="sec-label">Security &amp; Compliance</div>
+        <div class="cert-row">
+          <div class="cert">
+            <div class="cert-label">FedRAMP</div>
+            <div class="cert-desc">Authorized cloud infrastructure meeting federal security assessment standards</div>
+          </div>
+          <div class="cert">
+            <div class="cert-label">SOC II</div>
+            <div class="cert-desc">Independently audited security, availability, and confidentiality controls</div>
+          </div>
+          <div class="cert">
+            <div class="cert-label">Section 508</div>
+            <div class="cert-desc">WCAG 2.1 AA built into the design system and QA pipeline</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-label">Joint Delivery Approach</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Discovery &amp; Audit</strong>
+              <span>Content inventory, URL mapping, Section 508 baseline, and stakeholder interviews. WDG leads; WPVIP advises on platform architecture and migration tooling.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Design System &amp; Prototype</strong>
+              <span>USWDS-based design system with annotated wireframes validated with real NTSB users — journalists, safety professionals, and family support staff.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>WPVIP Build &amp; Migrate</strong>
+              <span>Phased development on WPVIP's FedRAMP infrastructure with parallel environments, automated testing gates, full redirect validation, and content migration tooling.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Launch &amp; Retain</strong>
+              <span>Dark launch, cutover, and retained support covering platform updates, security hardening, analytics review, and content team training.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div>
+    <div class="footer-rule"></div>
+    <footer class="footer">
+      <div class="footer-lock">
+        <span class="footer-wdg">WDG</span>
+        <span class="footer-x">×</span>
+        <span class="footer-vip">WordPress VIP</span>
+      </div>
+      <div class="footer-contacts">
+        <div class="footer-contact-item">
+          <strong>Jenna Westbrook</strong>
+          <span>Account Executive, Public Sector</span>
+          <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9c3ccc7c7c887deccdaddcbdbc6c6c2e9c8dcddc6c4c8ddddc0ca87cac6c4">[email&#160;protected]</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <strong>Homiera Emam</strong>
+          <span>Director of Public Affairs 
